@@ -1,0 +1,3 @@
+-c requirements.txt
+ruff
+autopep8
