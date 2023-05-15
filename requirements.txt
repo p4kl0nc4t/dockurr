@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements.in
 #
+alembic==1.10.4
+    # via flask-migrate
 amqp==5.1.1
     # via kombu
 billiard==3.6.4.0
@@ -36,9 +38,14 @@ docker-pycreds==0.4.0
 flask==2.3.2
     # via
     #   -r requirements.in
+    #   flask-migrate
     #   flask-sqlalchemy
-flask-sqlalchemy==3.0.3
+flask-migrate==4.0.4
     # via -r requirements.in
+flask-sqlalchemy==3.0.3
+    # via
+    #   -r requirements.in
+    #   flask-migrate
 greenlet==2.0.2
     # via sqlalchemy
 idna==3.4
@@ -51,9 +58,12 @@ jinja2==3.1.2
     # via flask
 kombu==5.2.4
     # via celery
+mako==1.2.4
+    # via alembic
 markupsafe==2.1.2
     # via
     #   jinja2
+    #   mako
     #   werkzeug
 passlib==1.7.4
     # via -r requirements.in
@@ -69,11 +79,17 @@ six==1.16.0
     #   docker-py
     #   docker-pycreds
 sqlalchemy==2.0.13
-    # via flask-sqlalchemy
+    # via
+    #   alembic
+    #   flask-sqlalchemy
 typing-extensions==4.5.0
-    # via sqlalchemy
+    # via
+    #   alembic
+    #   sqlalchemy
 urllib3==2.0.2
     # via requests
+uwsgi==2.0.21
+    # via -r requirements.in
 vine==5.0.0
     # via
     #   amqp

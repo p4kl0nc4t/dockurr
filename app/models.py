@@ -29,7 +29,7 @@ class BillingCharge(db.Model):
                           default=datetime.datetime.now)
     amount = db.Column(db.Float, nullable=False)
     # for the sake of simplicity
-    item = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
 
     def __init__(self, amount: float, item: str):
         self.amount = amount
