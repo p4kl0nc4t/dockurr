@@ -3,4 +3,5 @@ flask-sqlalchemy
 flask-migrate
 docker-py
 passlib
+celery
 uwsgi
