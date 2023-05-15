@@ -1,0 +1,48 @@
+#!/usr/bin/bash
+
+# This script will run all services/workers for dockurr
+# FOR TESTING/DEVELOPMENT ONLY
+
+# shellcheck disable=SC2064
+trap "kill -- -$$" EXIT  
+
+_tput() {
+        if command -v tput > /dev/null; then
+                tput "$@"
+        fi
+}
+
+add_prefix() {  # usage: add_prefix name color
+        prefix="$(_tput sgr0)"
+        prefix="$prefix$(_tput setab "$2")"
+        prefix="$prefix$(_tput bold)"
+        suffix="$(_tput sgr0)"
+        sed "s/^/$prefix$1$suffix: /"
+}
+
+print_banner() {
+        # credits to this guy: https://gist.github.com/dhrp/5733652
+        cat <<EOF
+  _______
+< dockurr >
+  -------
+      \           ##        .           
+       \      ## ## ##       ==           
+        \  ## ## ## ##      ===          
+       /""""""""""""""""\___/ ===       
+  ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~ 
+       \______ o          __/            
+         \    \        __/             
+          \____\______/                
+
+EOF
+}
+
+print_banner
+
+# adding another entry-point
+FLASK_APP=dockurr flask run --debug 2>&1 | add_prefix flask 125 &
+celery -A dockurr.celery worker 2>&1 | add_prefix celery 130 &
+wait
+
+# TODO: run other services

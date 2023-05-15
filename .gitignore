@@ -167,3 +167,7 @@ cython_debug/
 *.swo
 *.bkp
 .rtx.toml
+
+# Temp files (for testing)
+/.data.db
+/config.toml

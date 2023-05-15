@@ -1,0 +1,15 @@
+# configuration file for dockurr
+# this file will be directly loaded into the flask app
+
+[app]
+name = 'dockurr'
+
+[database]
+uri = 'sqlite:///data.db'
+
+[prices]
+format = 'Rp{price:.02f}'
+container_usage_per_minute = 250
+
+[celery]
+broker = 'amqp://localhost'
