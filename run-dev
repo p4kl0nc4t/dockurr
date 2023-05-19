@@ -4,7 +4,7 @@
 # FOR TESTING/DEVELOPMENT ONLY
 
 # shellcheck disable=SC2064
-trap "kill -- -$$" EXIT  
+trap "kill -KILL -- -$$" EXIT
 
 _tput() {
         if command -v tput > /dev/null; then
@@ -22,6 +22,8 @@ add_prefix() {  # usage: add_prefix name color
 
 print_banner() {
         # credits to this guy: https://gist.github.com/dhrp/5733652
+        tput setaf green
+        tput bold
         cat <<EOF
   _______
 < dockurr >
@@ -36,13 +38,17 @@ print_banner() {
           \____\______/                
 
 EOF
+        tput sgr0
 }
 
 print_banner
 
-# adding another entry-point
-FLASK_APP=dockurr flask run --debug 2>&1 | add_prefix flask 125 &
-celery -A dockurr.celery worker 2>&1 | add_prefix celery 130 &
+flask run --debug 2>&1 | add_prefix flask 125 &
+celery \
+        -A dockurr.make_celery worker \
+        -l INFO 2>&1 | add_prefix celery-worker 130 &
+celery \
+        -A dockurr.make_celery beat \
+        -s /tmp/dockurr-celery-schedule \
+        -l INFO 2>&1 | add_prefix celery-beat 131 &
 wait
-
-# TODO: run other services

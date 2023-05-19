@@ -1,6 +1,6 @@
 flask
 flask-sqlalchemy
-docker-py
+docker
 passlib
 celery
 uwsgi

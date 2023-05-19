@@ -29,10 +29,8 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-docker-py==1.10.6
+docker==6.1.2
     # via -r requirements.in
-docker-pycreds==0.4.0
-    # via docker-py
 flask==2.3.2
     # via
     #   -r requirements.in
@@ -53,6 +51,8 @@ markupsafe==2.1.2
     # via
     #   jinja2
     #   werkzeug
+packaging==23.1
+    # via docker
 passlib==1.7.4
     # via -r requirements.in
 prompt-toolkit==3.0.38
@@ -60,12 +60,9 @@ prompt-toolkit==3.0.38
 pytz==2023.3
     # via celery
 requests==2.30.0
-    # via docker-py
+    # via docker
 six==1.16.0
-    # via
-    #   click-repl
-    #   docker-py
-    #   docker-pycreds
+    # via click-repl
 sqlalchemy==2.0.13
     # via flask-sqlalchemy
 tomli==2.0.1
@@ -73,7 +70,9 @@ tomli==2.0.1
 typing-extensions==4.5.0
     # via sqlalchemy
 urllib3==2.0.2
-    # via requests
+    # via
+    #   docker
+    #   requests
 uwsgi==2.0.21
     # via -r requirements.in
 vine==5.0.0
@@ -84,6 +83,6 @@ vine==5.0.0
 wcwidth==0.2.6
     # via prompt-toolkit
 websocket-client==1.5.1
-    # via docker-py
+    # via docker
 werkzeug==2.3.4
     # via flask
