@@ -26,12 +26,12 @@ class User(db.Model):
         return pbkdf2_sha256.verify(user.password, password)
 
 
-class ContainerStatus(enum.IntEnum):
-    ERROR = -1
-    CREATING = 0
-    RUNNING = 1
-    STOPPED = 2
-    PAUSED = 3
+class ContainerStatus(enum.StrEnum):
+    ERROR = 'error'  # when a container is failed to run
+    CREATING = 'creating'  # when a container is just created, no internal id set
+    RUNNING = 'running'  # when a container has started
+    EXITED = 'exited'
+    PAUSED = 'paused'
 
 
 class Container(db.Model):
@@ -64,7 +64,7 @@ class Container(db.Model):
     stop_hour = db.Column(db.Integer, nullable=True)
     stop_minute = db.Column(db.Integer, nullable=True)
 
-    status = db.Column(db.Integer, nullable=False,
+    status = db.Column(db.String(255), nullable=False,
                        default=ContainerStatus.CREATING)
     action_logs = db.relationship(
         'ContainerActionLog',
@@ -98,16 +98,18 @@ class Container(db.Model):
         self.public_port = random.choice(unused_ports)
 
 
+class ContainerAction(enum.StrEnum):
+    START = 'start'
+    STOP = 'stop'
+
+
 class ContainerActionLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     container_id = db.Column(db.Integer, db.ForeignKey('container.id'))
     timestamp = db.Column(db.DateTime, nullable=False,
                           default=datetime.datetime.now)
-    is_started = db.Column(db.Boolean, nullable=False)
+    action = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, container_id: str, is_started: bool):
+    def __init__(self, container_id: str, action: ContainerAction):
         self.container_id = container_id
-        self.is_started = is_started
-
-
-db.create_all()
+        self.action = action

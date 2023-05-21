@@ -1,3 +1,4 @@
-import docker
-
-docker_client = docker.from_env()
+config = {
+    # overriden by config.toml
+    'include': 'dockurr.tasks.containerman'
+}

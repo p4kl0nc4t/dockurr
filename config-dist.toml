@@ -12,4 +12,4 @@ format = 'Rp{price:.02f}'
 container_usage_per_minute = 250
 
 [celery]
-broker = 'amqp://localhost'
+broker_url = 'amqp://localhost:5672'

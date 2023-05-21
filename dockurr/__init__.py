@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from .config import read_config
+from .tasks import config as celery_config
 from .views import bp as views_bp
 
 db = SQLAlchemy()
@@ -16,7 +17,10 @@ def celery_init_app(app: Flask) -> Celery:
                 return self.run(*args, **kwargs)
 
     celery_app = Celery(app.name, task_cls=FlaskTask)
-    celery_app.config_from_object(app.config['celery'])
+    # set from internal celery config
+    celery_app.conf.update(celery_config)
+    # set from gconfig
+    celery_app.config_from_object(gconfig['celery'])
     celery_app.set_default()
     app.extensions['celery'] = celery_app
     return celery_app
@@ -26,7 +30,6 @@ def create_app():
     app = Flask(__name__)
     app.config.update({
         'SQLALCHEMY_DATABASE_URI': gconfig['database']['uri'],
-        'celery': gconfig['celery']
     })
 
     app.config.from_prefixed_env()
