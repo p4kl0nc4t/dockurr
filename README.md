@@ -44,7 +44,13 @@ dan RabbitMQ.
 
 2. Atur konfigurasi pada `config.toml` (salin dari `config-dist.toml`).
 
-3. Jalankan semua service dengan command `./run-dev`
+3. (Opsional) Jalankan RabbitMQ via Docker (bisa diinstall juga)
+
+   ```sh
+   docker run -d -p 5672:5672 rabbitmq
+   ```
+
+4. Jalankan semua service dengan command `./run-dev`
 
 ## Lisensi
 
