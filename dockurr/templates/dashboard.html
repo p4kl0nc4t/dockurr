@@ -1,0 +1,36 @@
+{% extends "skel.html" %}
+
+{% block container %}
+<h1>Containers</h1>
+<p>Welcome, {{ g.username }}!<br /></p>
+<a role="button" href="{{ url_for('views.create_container') }}"
+  >Create container</a
+>
+<a role="button" href="{{ url_for('views.logout') }}">Logout</a>
+<ol>
+  {% for container in containers %}
+  <li>
+    <ul>
+      <li>Name: <b>{{ container.name }}</b></li>
+      <li>Internal ID: {{ container.internal_id }}</li>
+      <li>Image: {{ container.image }}</li>
+      <li>Status: {{ container.status }}</li>
+      <li>
+        Port binding: host:{{container.public_port}} to container:{{
+        container.container_port }}
+      </li>
+      <li>
+        Actions:
+        <a href="{{ url_for('views.start_container', id=container.id) }}"
+          >Start</a
+        >
+        <a href="{{ url_for('views.stop_container', id=container.id) }}"
+          >Stop</a
+        >
+        <a href="#">Delete</a>
+      </li>
+    </ul>
+  </li>
+  {% endfor %}
+</ol>
+{% endblock %}

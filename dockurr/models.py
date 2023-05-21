@@ -12,8 +12,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     password = db.Column(db.String(87))  # pbkdf2_sha256
-    containers = db.relationship(
-        'Container', lazy=True, backref='user', cascade='all,delete')
+    containers = db.relationship('Container',
+                                 lazy=True,
+                                 backref='user',
+                                 cascade='all,delete')
 
     def __init__(self, username: str, plain_password: str):
         self.username = username
@@ -84,11 +86,9 @@ class Container(db.Model):
         self.start_minute = start_minute
         self.stop_hour = stop_hour
         self.stop_minute = stop_minute
-        # TODO: integrate with celery to add crontab
 
     def unset_schedule(self):
         self.scheduled = False
-        # TODO: remove related celery crontab
 
     def assign_random_public_port(self):
         allocated_ports = [c.public_port for c in self.query.all()]
