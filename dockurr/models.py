@@ -1,6 +1,7 @@
 import datetime
 import enum
 import random
+from typing import Union
 
 from passlib.hash import pbkdf2_sha256
 from flask_sqlalchemy import SQLAlchemy
@@ -22,13 +23,13 @@ class User(db.Model):
         self.password = pbkdf2_sha256.hash(plain_password)
 
     @classmethod
-    def authenticate(cls, username, password) -> int | None:
+    def authenticate(cls, username, password) -> Union[int, None]:
         user: User = cls.query.filter_by(username=username).first()
         if user and pbkdf2_sha256.verify(password, user.password):
             return user.id
 
 
-class ContainerStatus(enum.StrEnum):
+class ContainerStatus(str, enum.Enum):
     ERROR = 'error'  # when a container is failed to run
     CREATING = 'creating'  # when a container is just created, no internal id set
     RUNNING = 'running'  # when a container has started
@@ -98,7 +99,7 @@ class Container(db.Model):
         self.public_port = random.choice(unused_ports)
 
 
-class ContainerAction(enum.StrEnum):
+class ContainerAction(str, enum.Enum):
     START = 'start'
     STOP = 'stop'
 
