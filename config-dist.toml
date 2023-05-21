@@ -16,3 +16,4 @@ container_usage_per_minute = 250
 
 [celery]
 broker_url = 'amqp://localhost:5672'
+redbeat_redis_url = 'redis://localhost:6379/1'

@@ -51,6 +51,6 @@ celery \
         -l INFO 2>&1 | add_prefix celery-worker 130 &
 celery \
         -A dockurr.make_celery beat \
-        -s /tmp/dockurr-celery-schedule \
+        -S redbeat.RedBeatScheduler \
         -l INFO 2>&1 | add_prefix celery-beat 131 &
 wait

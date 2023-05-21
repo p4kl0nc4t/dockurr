@@ -1,4 +1,5 @@
 config = {
     # overriden by config.toml
-    'include': 'dockurr.tasks.containerman'
+    'include': ['dockurr.tasks.containerman',
+                'dockurr.tasks.container_scheduler']
 }
