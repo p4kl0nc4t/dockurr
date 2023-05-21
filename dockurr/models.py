@@ -3,8 +3,9 @@ import enum
 import random
 
 from passlib.hash import pbkdf2_sha256
+from flask_sqlalchemy import SQLAlchemy
 
-from . import db
+db = SQLAlchemy()
 
 
 class User(db.Model):
@@ -19,11 +20,10 @@ class User(db.Model):
         self.password = pbkdf2_sha256.hash(plain_password)
 
     @classmethod
-    def authenticate(cls, username, password) -> bool:
+    def authenticate(cls, username, password) -> int | None:
         user: User = cls.query.filter_by(username=username).first()
-        if not user:
-            return False
-        return pbkdf2_sha256.verify(user.password, password)
+        if user and pbkdf2_sha256.verify(password, user.password):
+            return user.id
 
 
 class ContainerStatus(enum.StrEnum):

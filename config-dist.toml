@@ -4,6 +4,9 @@
 [app]
 name = 'dockurr'
 
+[flask]
+secret_key = 'kafalksfjlskdjflksanksafljsnfksanfdksan'
+
 [database]
 uri = 'sqlite:///data.db'
 

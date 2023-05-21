@@ -43,6 +43,8 @@ EOF
 
 print_banner
 
+flask createdb
+
 flask run --debug 2>&1 | add_prefix flask 125 &
 celery \
         -A dockurr.make_celery worker \

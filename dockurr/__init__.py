@@ -1,12 +1,11 @@
 from celery import Celery, Task
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 from .config import read_config
 from .tasks import config as celery_config
 from .views import bp as views_bp
+from .models import db
 
-db = SQLAlchemy()
 gconfig = read_config()
 
 
@@ -30,6 +29,7 @@ def create_app():
     app = Flask(__name__)
     app.config.update({
         'SQLALCHEMY_DATABASE_URI': gconfig['database']['uri'],
+        'SECRET_KEY': gconfig['flask']['secret_key']
     })
 
     app.config.from_prefixed_env()
