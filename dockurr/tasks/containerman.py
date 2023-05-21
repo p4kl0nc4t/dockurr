@@ -40,6 +40,9 @@ def start_container(id_):
                 detach=True)
         except Exception as e:
             logger.error('Failed to start container %s, exc: %r', id_, e)
+            # bye-bye, container will be reaped
+            container.status = ContainerStatus.ERROR
+            db.session.commit()
             raise e
         container.internal_id = docker_container.id
     else:
@@ -57,7 +60,10 @@ def stop_container(id_):
 
     if not container:
         raise ValueError(f'Container id={id_} not found')
-    elif not container.internal_id or not docker_container_exists
+    elif not container.internal_id \
+            or not docker_container_exists(container.internal_id):
+        # TODO
+        pass
 
     if ContainerStatus(container.status) not in [
             ContainerStatus.RUNNING,
