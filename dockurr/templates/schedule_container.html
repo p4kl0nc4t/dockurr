@@ -1,0 +1,20 @@
+{% extends "skel.html" %}
+
+{% block title %}Schedule Container{% endblock %}
+
+{% block container %}
+<h1>Schedule Container : {{container.name}}</h1>
+<form method="post">
+  <input type="checkbox" name="scheduled">
+  <label>Enable</label>
+    <br />
+  <label> Enter your start scheduling time</label>
+  <input type="time" name="start_time">
+  <br />
+  <label> Enter your stop scheduling time</label>
+  <input type="time" name="stop_time">
+  <br />
+  <button type="submit">Schedule</button>
+  <!--TODO: implementasi prefill start/stop sesuai container -->
+</form>
+{% endblock %}
