@@ -4,7 +4,23 @@
 # FOR TESTING/DEVELOPMENT ONLY
 
 # shellcheck disable=SC2064
-trap "kill -KILL -- -$$" EXIT
+
+int_count=0
+handle_trap() {
+        echo "Caught SIGINT, killing all processes... press ^C again to force kill"
+        int_count=$((int_count + 1))
+        if [ "$int_count" -gt 1 ]; then
+                echo "Caught SIGINT twice, sending SIGKILL to all childs..."
+                kill -KILL -- $$
+        fi
+
+        for job in $(jobs -p); do
+                kill "$job" &
+        done
+        wait
+}
+
+trap handle_trap SIGINT SIGTERM
 
 _tput() {
         if command -v tput > /dev/null; then
@@ -45,12 +61,18 @@ print_banner
 
 flask createdb
 
+LEVEL=DEBUG
+if [ -z "$DEBUG" ]; then
+        LEVEL=INFO
+fi
+
 flask run --debug 2>&1 | add_prefix flask 125 &
 celery \
         -A dockurr.make_celery worker \
-        -l INFO 2>&1 | add_prefix celery-worker 130 &
+        -l $LEVEL 2>&1 | add_prefix celery-worker 130 &
 celery \
         -A dockurr.make_celery beat \
         -S redbeat.RedBeatScheduler \
-        -l INFO 2>&1 | add_prefix celery-beat 131 &
+        -l $LEVEL 2>&1 | add_prefix celery-beat 131 &
+
 wait
