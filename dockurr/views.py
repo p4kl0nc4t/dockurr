@@ -87,7 +87,15 @@ def stop_container(id):
     containerman.stop_container(id)
     return redirect(url_for('views.dashboard'))
 
+@bp.route('/delete-container/<int:id>')
+def delete_container(id):
+    containerman.delete_container(id)
+    flash(f'Container {id} deleted', 'info')
+    return redirect(url_for('views.dashboard'))
+
+
 @bp.route('/schedule-container/<int:id>')
 def schedule_container(id):
     container = Container.query.filter_by(id=id).first_or_404()
     return render_template('schedule_container.html', container=container)
+

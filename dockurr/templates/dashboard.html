@@ -1,36 +1,46 @@
-{% extends "skel.html" %}
-
-{% block container %}
-<h1>Containers</h1>
-<p>Welcome, {{ g.username }}!<br /></p>
-<a role="button" href="{{ url_for('views.create_container') }}"
-  >Create container</a
->
-<a role="button" href="{{ url_for('views.logout') }}">Logout</a>
+{% extends "skel.html" %} {% block container %}
+<h1 class="text-center">Containers Dashboard</h1>
+<div class="d-flex justify-content-between">
+  <h5 class="mx-5">Welcome, {{ g.username }}!<br /></h5>
+  <div>
+    <a class="btn btn-success mx-2" role="button" href="{{ url_for('views.create_container') }}"
+      >Create container</a
+    >
+    <a class="btn btn-success" role="button" href="{{ url_for('views.logout') }}">Logout</a>
+  </div>
+</div>
 <ol>
   {% for container in containers %}
-  <li>
-    <ul>
-      <li>Name: <b>{{ container.name }}</b></li>
-      <li>Internal ID: {{ container.internal_id }}</li>
-      <li>Image: {{ container.image }}</li>
-      <li>Status: {{ container.status }}</li>
-      <li>
-        Port binding: host:{{container.public_port}} to container:{{
-        container.container_port }}
-      </li>
-      <li>
-        Actions:
-        <a href="{{ url_for('views.start_container', id=container.id) }}"
-          >Start</a
-        >
-        <a href="{{ url_for('views.stop_container', id=container.id) }}"
-          >Stop</a
-        >
-        <a href="#">Delete</a>
-      </li>
-    </ul>
-  </li>
+  <div class="card my-4">
+    <div class="card-header">
+     <h3>
+       <b>{{ container.name }}</b>
+     </h3> 
+    </div>
+    <div class="card-body">
+      <div class="d-flex">
+        <div class="d-flex flex-column px-3">
+          <h5 class="card-title flex-grow-1">Image</h5>
+          <p class="card-text font-sm"><small>Internal ID</small></p>
+          <p class="card-text">Status</p>
+          <p class="card-text">Host</p>
+          <p class="card-text">To</p>
+        </div>
+        <div class="d-flex flex-column px-5">
+          <h5 class="card-title flex-grow-1">{{container.image}}</h5>
+          <p class="card-text font-sm d-inline-block text-truncate"><small>{{container.internal_id}}</small></p>
+          <p class="card-text">{{container.status}}</p>
+          <p class="card-text">{{container.public_port}}</p>
+          <p class="card-text">{{container.container_port}}</p>
+        </div>
+      </div>
+      <div class="p-3">
+        <a class="btn btn-primary" href="{{ url_for('views.start_container', id=container.id) }}">Start</a>
+        <a class="btn btn-warning" href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
+        <a class="btn btn-danger" href="{{ url_for('views.delete_container', id=container.id) }}">Delete</a>
+      </div>
+    </div>
+  </div>
   {% endfor %}
 </ol>
 {% endblock %}
