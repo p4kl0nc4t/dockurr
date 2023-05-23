@@ -1,3 +1,4 @@
+from dockurr.config import gconfig
 from celery.schedules import crontab
 
 config = {
@@ -7,7 +8,7 @@ config = {
     'beat_schedule': {
         'container-reaper': {
             'task': 'dockurr.tasks.containerman.container_reaper',
-            'schedule': crontab(minute='5')
+            'schedule': gconfig['celery']['intervals']['container_reaper'],
         }
     }
 }

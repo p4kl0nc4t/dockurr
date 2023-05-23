@@ -1,12 +1,10 @@
 from celery import Celery, Task
 from flask import Flask
 
-from .config import read_config
+from .config import gconfig
 from .tasks import config as celery_config
 from .views import bp as views_bp
 from .models import db
-
-gconfig = read_config()
 
 
 def celery_init_app(app: Flask) -> Celery:
