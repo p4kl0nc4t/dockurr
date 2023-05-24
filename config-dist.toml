@@ -21,3 +21,4 @@ redbeat_redis_url = 'redis://localhost:6379/1'
 # for production, do not use short intervals!
 container_reaper = 5 # seconds
 container_syncer = 5 # seconds
+update_beat_schedule = 120 # seconds

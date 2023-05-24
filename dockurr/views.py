@@ -87,6 +87,7 @@ def stop_container(id):
     containerman.stop_container(id)
     return redirect(url_for('views.dashboard'))
 
+
 @bp.route('/delete-container/<int:id>')
 def delete_container(id):
     containerman.delete_container(id)
@@ -94,8 +95,24 @@ def delete_container(id):
     return redirect(url_for('views.dashboard'))
 
 
-@bp.route('/schedule-container/<int:id>')
+@bp.route('/schedule-container/<int:id>', methods=['GET', 'POST'])
 def schedule_container(id):
     container = Container.query.filter_by(id=id).first_or_404()
-    return render_template('schedule_container.html', container=container)
+    if request.method == 'POST':
+        scheduled = request.form.get('scheduled')
+        start_hour = request.form.get('start_hour')
+        start_minute = request.form.get('start_minute')
+        stop_hour = request.form.get('stop_hour')
+        stop_minute = request.form.get('stop_minute')
 
+        if scheduled and start_hour and start_minute \
+                and stop_hour and stop_minute:
+            container.set_schedule(start_hour, start_minute,
+                                   stop_hour, stop_minute)
+            flash(f'Container {container.name} scheduled', 'success')
+            # TODO: woy ronggo rapiin ye
+        else:
+            container.unset_schedule()
+            flash(f'Container {container.name} unscheduled', 'info')
+        db.session.commit()
+    return render_template('schedule_container.html', container=container)
