@@ -16,16 +16,24 @@ menggunakan Docker Engine.
 
 ## Tech stack
 
-1. Docker
-2. Flask (Python)
-3. Celery
-4. RabbitMQ
-5. Jinja2
+1. Docker Engine
+2. Flask (web interface)
+3. Celery (scheduling dan tasks)
+4. Redis (menyimpan metadata celery beat)
+5. RabbitMQ (menyimpan antrian untuk celery worker)
+6. Jinja2 (front-end)
 
 ## Development Setup (WIP)
 
 dockurr memerlukan Python 3.11 (belum dicoba di versi lain)
-dan RabbitMQ.
+RabbitMQ, dan Redis.
+
+0. (Opsional) Jalankan service yang diperlukan (seperti Redis) menggunakan
+   Docker Compose
+
+   ```sh
+   docker compose up
+   ```
 
 1. Install requirements
 
