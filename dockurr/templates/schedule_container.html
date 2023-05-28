@@ -3,7 +3,7 @@
 {% block title %}Schedule Container{% endblock %}
 
 {% block container %}
-<form method="post" class="d-flex justify-content-center flex-column align-items-center h-100">
+<form method="post" class="d-flex justify-content-center flex-column align-items-center">
   <h1>Schedule Container: {{container.name}}</h1>
   <div class="col-6">
     <input type="checkbox" name="scheduled" {% if container.scheduled %}checked{% endif %} id="flexCheckIndeterminate">
