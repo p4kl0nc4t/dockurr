@@ -1,9 +1,9 @@
 {% extends "skel.html" %}
 
-{% block title %}Create Container}{% endblock %}
+{% block title %}{Create Container}{% endblock %}
 
 {% block container %}
-<form method="post" class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
+<form method="post" class="d-flex justify-content-center flex-column align-items-center h-100">
   <h1>Create Container</h1>
   <div class="col-6">
     <label>Container name</label>
@@ -20,6 +20,6 @@
   <input type="number" name="container_port" placeholder="ex: 80" class="form-control" required />
   <br />
   </div>
-  <button type="submit" class="my-3 w-25 btn btn-primary btn-lg">Create</button>
+  <button type="submit" class="my-3 btn btn-primary btn-lg">Create</button>
 </form>
 {% endblock %}
