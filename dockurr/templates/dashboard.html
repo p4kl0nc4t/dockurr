@@ -1,7 +1,8 @@
 {% extends "skel.html" %}
+{% block title %}Dashboard{% endblock %}
 {% block container %}
 <div class="py-5 text-center">
-  <img class="d-block mx-auto mb-4" src="../image/dockurrr.svg" alt="" width="150" height="120">
+        <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='logo.svg') }}" alt="" width="150" height="120">
   <h1>Dockurr</h1>
 </div>
 <div class="d-flex justify-content-between">
@@ -40,6 +41,7 @@
         <a class="btn btn-primary" href="{{ url_for('views.start_container', id=container.id) }}">Start</a>
         <a class="btn btn-warning" href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
         <a class="btn btn-danger" href="{{ url_for('views.delete_container', id=container.id) }}">Delete</a>
+        <a class="btn btn-danger" href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
       </div>
     </div>
   </div>

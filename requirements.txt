@@ -70,7 +70,9 @@ python-dateutil==2.8.2
 pytz==2023.3
     # via celery
 redis==4.5.5
-    # via celery-redbeat
+    # via
+    #   -r requirements.in
+    #   celery-redbeat
 requests==2.30.0
     # via docker
 six==1.16.0

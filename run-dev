@@ -3,24 +3,73 @@
 # This script will run all services/workers for dockurr
 # FOR TESTING/DEVELOPMENT ONLY
 
-# shellcheck disable=SC2064
+main() {
+        print_banner
+        flask createdb
+
+        LEVEL=DEBUG
+        if [ -z "$DEBUG" ]; then
+                LEVEL=INFO
+        fi
+
+
+        run_command flask 125 \
+                flask run --debug
+        run_command celery-worker 130 \
+                celery \
+                -A dockurr.make_celery worker \
+                -l $LEVEL
+        run_command celery-beat 131 \
+                celery \
+                -A dockurr.make_celery beat \
+                -S redbeat.RedBeatScheduler \
+                -l $LEVEL
+
+        trap handle_int SIGINT
+        while [ $childs_exited = 0 ]; do
+                wait_for_childs
+        done
+        trap - SIGINT
+        wait_for_childs
+}
 
 int_count=0
-handle_trap() {
+childs_exited=0
+child_pids=()
+
+wait_for_childs() {
+        for pid in "${child_pids[@]}"; do
+                wait "$pid"
+        done
+        childs_exited=1
+}
+
+kill_childs() {
+        for pid in "${child_pids[@]}"; do
+                kill "$1" "$pid"
+        done
+}
+
+handle_int() {
         echo "Caught SIGINT, killing all processes... press ^C again to force kill"
         int_count=$((int_count + 1))
         if [ "$int_count" -gt 1 ]; then
                 echo "Caught SIGINT twice, sending SIGKILL to all childs..."
-                kill -KILL -- $$
+                kill_childs -KILL
+                childs_exited=1
         fi
-
-        for job in $(jobs -p); do
-                kill "$job" &
-        done
-        wait
+        kill_childs -TERM
 }
 
-trap handle_trap SIGINT SIGTERM
+
+run_command() {
+        local prefix=$1
+        local color=$2
+        shift 2
+
+        setsid "$@" &> >(add_prefix "$prefix" "$color") &
+        child_pids+=("$!")
+}
 
 _tput() {
         if command -v tput > /dev/null; then
@@ -33,7 +82,7 @@ add_prefix() {  # usage: add_prefix name color
         prefix="$prefix$(_tput setab "$2")"
         prefix="$prefix$(_tput bold)"
         suffix="$(_tput sgr0)"
-        sed "s/^/$prefix$1$suffix: /"
+        setsid sed "s/^/$prefix$1$suffix: /"
 }
 
 print_banner() {
@@ -57,22 +106,4 @@ EOF
         tput sgr0
 }
 
-print_banner
-
-flask createdb
-
-LEVEL=DEBUG
-if [ -z "$DEBUG" ]; then
-        LEVEL=INFO
-fi
-
-flask run --debug 2>&1 | add_prefix flask 125 &
-celery \
-        -A dockurr.make_celery worker \
-        -l $LEVEL 2>&1 | add_prefix celery-worker 130 &
-celery \
-        -A dockurr.make_celery beat \
-        -S redbeat.RedBeatScheduler \
-        -l $LEVEL 2>&1 | add_prefix celery-beat 131 &
-
-wait
+main
