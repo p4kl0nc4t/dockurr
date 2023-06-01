@@ -3,25 +3,26 @@
 {% block title %}Billing{% endblock %}
 
 {% block container %}
-    <div class="d-inline-flex">
-        {% for container in containers %}
-            <h1>{{container.name}}</h1>
-        {% endfor %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">Start Time</th>
+            <th scope="col">Stop Time</th>
+            <th scope="col">Minutes</th>
+            <th scope="col">Cost</th>
+            </tr>
+        </thead>
         {% for bill in bills %}
-        <div class="d-flex my-3 ">
-            <div class="px-5">
-                <h5>Start Time</h5>
-                <h5>Stop Time</h5>
-                <h5>Minutes</h5>
-                <h5>Cost</h5>
-            </div>
-            <div class="px-5">
-                <h5>{{ bill['start'] }}</h5>
-                <h5>{{ bill['stop'] }}</h5>
-                <h5>{{ bill['minutes'] }}</h5>
-                <h5>{{ bill['cost'] }}</h5>
-            </div>
-        </div>
+        <tbody>
+            <tr>
+            <td>{{bill['start']}}</td>
+            <td>{{bill['stop']}}</td>
+            <td>{{bill['minutes']}}</td>
+            <td>{{bill['cost']}}</td>
+        </tr>
         {% endfor %}
-    </div">
+
+
+        </tbody>
+        </table>
 {% endblock %}
