@@ -1,10 +1,12 @@
 services:
   rabbitmq:
     image: rabbitmq
+    restart: unless-stopped
     ports:
       - 5672:5672
 
   redis:
     image: redis
+    restart: unless-stopped
     ports:
       - 6379:6379

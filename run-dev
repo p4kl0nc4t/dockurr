@@ -46,7 +46,7 @@ wait_for_childs() {
 
 kill_childs() {
         for pid in "${child_pids[@]}"; do
-                kill "$1" "$pid"
+                kill "$1" "$pid" &>/dev/null
         done
 }
 
