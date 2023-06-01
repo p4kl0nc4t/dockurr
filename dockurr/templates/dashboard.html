@@ -35,16 +35,17 @@
         <div class="d-flex flex-column px-5">
           <h5 class="card-title flex-grow-1">{{container.image}}</h5>
           <p class="card-text font-sm d-inline-block text-truncate"><small>{{container.internal_id}}</small></p>
-          <p class="card-text">{{container.status}}</p>
+          <p id="status" class="card-text">{{container.status}}</p>
           <p class="card-text">{{container.public_port}}</p>
           <p class="card-text">{{container.container_port}}</p>
         </div>
       </div>
       <div class="p-3">
-        <a class="btn btn-primary" href="{{ url_for('views.start_container', id=container.id) }}">Start</a>
-        <a class="btn btn-info" href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
-        <a class="btn btn-warning" href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
+        <a  id="btn-start" class="btn btn-primary {% if container.status == g.CS.RUNNING %}disabled{% endif %}" href="{{ url_for('views.start_container', id=container.id) }}" type="button" disabled>Start</a>
+        <a class="btn btn-warning {% if container.status == g.CS.EXITED %}disabled{% endif %}" href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
         <a class="btn btn-danger" href="{{ url_for('views.delete_container', id=container.id) }}">Delete</a>
+        <a class="btn btn-danger" href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
+        <a class="btn btn-primary" href="{{ url_for('views.billing', id=container.id) }}">View Billing</a>
       </div>
     </div>
   </div>
