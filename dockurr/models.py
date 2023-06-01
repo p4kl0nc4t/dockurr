@@ -6,6 +6,8 @@ from typing import Union
 from passlib.hash import pbkdf2_sha256
 from flask_sqlalchemy import SQLAlchemy
 
+from .config import gconfig
+
 db = SQLAlchemy()
 
 
@@ -35,6 +37,16 @@ class ContainerStatus(str, enum.Enum):
     RUNNING = 'running'  # when a container has started
     EXITED = 'exited'
     PAUSED = 'paused'
+
+
+class DockerContainerStatus(str, enum.Enum):
+    CREATED = 'created'
+    RUNNING = 'running'
+    PAUSED = 'paused'
+    RESTARTING = 'restarting'
+    REMOVING = 'removing'
+    EXITED = 'exited'
+    DEAD = 'dead'
 
 
 class Container(db.Model):
@@ -95,8 +107,34 @@ class Container(db.Model):
         allocated_ports = [c.public_port for c in self.query.all()]
         unused_ports = [
             p for p in range(1024, 65536)
-            if p not in allocated_ports]
+            if p not in allocated_ports
+        ]
         self.public_port = random.choice(unused_ports)
+
+    def calculate_bills(self):
+        action_logs = self.action_logs
+        bills = []
+        lone_start = None
+
+        for log in action_logs:
+            if lone_start is None and log.action == ContainerAction.START:
+                lone_start = log
+            elif lone_start is not None and log.action == ContainerAction.STOP:
+                seconds = (log.timestamp -
+                           lone_start.timestamp).total_seconds()
+                minutes = seconds // 60
+                bills.append({
+                    'start': lone_start.timestamp,
+                    'stop': log.timestamp,
+                    'minutes': minutes,
+                    'cost': minutes * gconfig['prices']['container_usage_per_minute'],
+                })
+                lone_start = None
+        return bills
+
+    @property
+    def last_action(self):
+        return self.action_logs[-1].action
 
 
 class ContainerAction(str, enum.Enum):

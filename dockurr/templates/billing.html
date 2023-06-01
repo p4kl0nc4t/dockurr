@@ -1,0 +1,12 @@
+{% extends "skel.html" %}
+
+{% block title %}Billing{% endblock %}
+
+{% block container %}
+<ol>
+    {% for bill in bills %}
+    <li>Minutes: {{ bill['minutes'] }}</li>
+    <li>Cost: {{ bill['cost'] }}</li>
+    {% endif %}
+</ol>
+{% endblock %}
