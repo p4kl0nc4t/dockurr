@@ -1,7 +1,7 @@
 from flask import (Blueprint, abort, redirect, g,
                    render_template, request, session, url_for, flash)
 
-from dockurr.models import User, Container, db
+from dockurr.models import User, Container, ContainerStatus, db
 from dockurr.tasks import containerman
 
 bp = Blueprint('views', __name__)
@@ -13,6 +13,7 @@ def check_auth():
         return redirect(url_for('views.auth'))
     g.uid = session.get('uid')
     g.username = session.get('username')
+    g.CS = ContainerStatus
 
 
 @bp.route('/')
@@ -78,19 +79,19 @@ def create_container():
 
 @bp.route('/start-container/<int:id>')
 def start_container(id):
-    containerman.start_container(id)
+    containerman.start_container.delay(id)
     return redirect(url_for('views.dashboard'))
 
 
 @bp.route('/stop-container/<int:id>')
 def stop_container(id):
-    containerman.stop_container(id)
+    containerman.stop_container.delay(id)
     return redirect(url_for('views.dashboard'))
 
 
 @bp.route('/delete-container/<int:id>')
 def delete_container(id):
-    containerman.delete_container(id)
+    containerman.delete_container.delay(id)
     flash(f'Container {id} deleted', 'info')
     return redirect(url_for('views.dashboard'))
 
@@ -116,3 +117,11 @@ def schedule_container(id):
             flash(f'Container {container.name} unscheduled', 'info')
         db.session.commit()
     return render_template('schedule_container.html', container=container)
+
+
+@bp.route('/billing/<int:id>')
+def billing(id):
+    container = Container.query.filter_by(user_id=g.uid, id=id).first_or_404()
+    return render_template('billing.html',
+                           container=container,
+                           bills=container.calculate_bills())

@@ -3,10 +3,25 @@
 {% block title %}Billing{% endblock %}
 
 {% block container %}
-<ol>
-    {% for bill in bills %}
-    <li>Minutes: {{ bill['minutes'] }}</li>
-    <li>Cost: {{ bill['cost'] }}</li>
-    {% endif %}
-</ol>
+    <div class="d-inline-flex">
+        {% for container in containers %}
+            <h1>{{container.name}}</h1>
+        {% endfor %}
+        {% for bill in bills %}
+        <div class="d-flex my-3 ">
+            <div class="px-5">
+                <h5>Start Time</h5>
+                <h5>Stop Time</h5>
+                <h5>Minutes</h5>
+                <h5>Cost</h5>
+            </div>
+            <div class="px-5">
+                <h5>{{ bill['start'] }}</h5>
+                <h5>{{ bill['stop'] }}</h5>
+                <h5>{{ bill['minutes'] }}</h5>
+                <h5>{{ bill['cost'] }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </div">
 {% endblock %}

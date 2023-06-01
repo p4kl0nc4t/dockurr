@@ -1,23 +1,30 @@
+{% extends "skel.html" %}
+
 {% block title %}Create Container{% endblock %}
 
 {% block container %}
-<form method="post" class="d-flex justify-content-center flex-column align-items-center h-100">
-  <h1>Create Container</h1>
-  <div class="col-6">
-    <label>Container name</label>
-    <input type="text" name="name" placeholder="ex: My nginx server" class="form-control" required />
-    <br />
+<h1 class="display-4 py-2 text-truncate text-center fw-bold">Create Container</h1>
+<div class="container">
+  <div class="row">
+      <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+          <div class="px-2 text-start">
+              <form action="" class="justify-content-center" method="post">
+                  <div class="form-group py-2">
+                      <label class="sr-only">Container Name</label>
+                      <input type="text" class="form-control" placeholder="Jane Doe" name="name" value="My nginx server" required>
+                    </div>
+                    <div class="form-group py-2">
+                      <label class="sr-only">From Image</label>
+                      <input type="text" class="form-control" placeholder="nginx" name="image" value="nginx" required>
+                    </div>
+                    <div class="form-group py-2">
+                      <label class="sr-only">Container Port</label>
+                      <input type="text" class="form-control" placeholder="80" name="container_port" value="80" required>
+                    </div>
+                  <button type="submit" class="btn btn-primary">Create</button>
+              </form>
+          </div>
+      </div>
   </div>
-  <div class="col-6">
-    <label>From image:</label>
-    <input type="text" name="image" placeholder="ex: nginx" class="form-control" required />
-    <br />
-  </div>
-  <div class="col-6">
-  <label>Container port (to be forwarded):</label>
-  <input type="number" name="container_port" placeholder="ex: 80" class="form-control" required />
-  <br />
-  </div>
-  <button type="submit" class="my-3 btn btn-primary btn-lg">Create</button>
-</form>
+</div>
 {% endblock %}
