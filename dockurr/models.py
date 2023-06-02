@@ -87,6 +87,9 @@ class Container(db.Model):
 
     @property
     def status(self) -> ContainerStatus:
+        if not self.internal_id:
+            return ContainerStatus.NOT_FOUND
+
         status = get_docker_container_status(self.internal_id)
         if not status:
             return ContainerStatus.NOT_FOUND
@@ -142,7 +145,6 @@ class Container(db.Model):
             if p not in allocated_ports
         ]
         self.public_port = random.choice(unused_ports)
-
 
 
 class ContainerAction(str, enum.Enum):
