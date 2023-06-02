@@ -1,0 +1,35 @@
+{% extends "skel.html" %}
+
+{% block title %}Container Billing{% endblock %}
+
+
+{% block container %}
+  <h1>Container Bills: {{ container.name }}
+    <span class="badge badge-secondary">({{container.id}})</span>
+  </h1>
+  <h5>Total cost: (TODO: KADEK)</h5>
+  <p>Price per billed minute is {{ config.DOCKURR_PRICES['format'].format(price=config.DOCKURR_PRICES['container_usage_per_minute']) }}</p>
+  <h3>History</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Start Time</th>
+          <th scope="col">Stop Time</th>
+          <th scope="col">Minutes</th>
+          <th scope="col">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bill in container.bills %}
+          <tr>
+            <td>{{ bill['start'].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ bill['stop'].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ '%.2f' | format(bill['minutes']) }}</td>
+            <td>{{ config.DOCKURR_PRICES['format'].format(price=bill['cost']) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

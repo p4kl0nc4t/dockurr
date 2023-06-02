@@ -3,42 +3,39 @@
 {% block title %}Schedule Container{% endblock %}
 
 {% block container %}
-<form method="post" class="d-flex justify-content-center flex-column align-items-center">
-  <h1>Schedule Container: {{container.name}}</h1>
-  <div class="col-5">
-    <input type="checkbox" name="scheduled" {% if container.scheduled %}checked{% endif %} id="flexCheckIndeterminate">
-    <label class="my-2 form-check-label" for="flexCheckIndeterminate">
-      Enable
-    </label>
-  </div>
-  <div class="d-flex container justify-content-center flex-column align-items-center">
-    <div class="row">
-      <div class="col-6">
-        <label>Start hour</label>
-        <input type="number" name="start_hour" class="form-control" value="{{ container.start_hour }}" />
-        <br />
-      </div>
-      <div class="col-6">
-        <label>Start minute</label>
-        <input type="number" name="start_minute" class="form-control" value="{{ container.start_minute }}">
-        <br />
-      </div>
+  <form method="post" class="d-flex justify-content-center flex-column align-items-center" x-data="{ enabled: {{ container.scheduled|tojson }} }">
+    <h1>Schedule Container: {{container.name}}</h1>
+    <div class="w-50 my-2 form-check">
+      <input type="checkbox" class="form-check-input" id="checkEnableScheduling" name="scheduled" x-model="enabled">
+      <label class="form-check-label" for="checkEnableScheduling">Enable scheduling</label>
     </div>
-    <div class="row">
-      <div class="col-6">
-        <label>Stop hour</label>
-        <input type="number" name="stop_hour" class="form-control" value="{{ container.stop_hour }}">
-        <br />
+    <div class="d-flex container justify-content-center flex-column align-items-center">
+      <div class="row">
+        <div class="col-6" x-show="enabled">
+          <label>Start hour</label>
+          <input type="number" name="start_hour" class="form-control" value="{{ container.start_hour }}" />
+          <br />
+        </div>
+        <div class="col-6" x-show="enabled">
+          <label>Start minute</label>
+          <input type="number" name="start_minute" class="form-control" value="{{ container.start_minute }}">
+          <br />
+        </div>
       </div>
-      <div class="col-6">
-        <label>Stop minute</label>
-        <input type="number" name="stop_minute" class="form-control" value="{{ container.stop_minute }}">
-        <br />
+      <div class="row">
+        <div class="col-6" x-show="enabled">
+          <label>Stop hour</label>
+          <input type="number" name="stop_hour" class="form-control" value="{{ container.stop_hour }}">
+          <br />
+        </div>
+        <div class="col-6" x-show="enabled">
+          <label>Stop minute</label>
+          <input type="number" name="stop_minute" class="form-control" value="{{ container.stop_minute }}">
+          <br />
+        </div>
       </div>
-    </div>
-    <div class="d-flex justify-content-center align-item-center col-6">
-      <button class="my-3 btn btn-primary btn-lg" type="submit">Schedule</button>
-    </div>
-    <!--TODO: implementasi prefill start/stop sesuai container -->
-</form>
+      <div class="d-flex justify-content-center align-item-center col-6">
+        <button class="my-3 btn btn-primary btn-lg" type="submit">Schedule</button>
+      </div>
+  </form>
 {% endblock %}
