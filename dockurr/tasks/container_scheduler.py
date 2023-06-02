@@ -1,9 +1,8 @@
-from redbeat import RedBeatSchedulerEntry
-from redbeat.schedulers import get_redis
-
-from celery import shared_task, current_app
+from celery import current_app, shared_task
 from celery.schedules import crontab
 from celery.utils.log import get_task_logger
+from redbeat import RedBeatSchedulerEntry
+from redbeat.schedulers import get_redis
 
 from dockurr.models import Container
 
@@ -19,16 +18,16 @@ def _create_and_update_entry(prefix, key, task, args, schedule):
     if rc.exists(redis_key):
         entry = RedBeatSchedulerEntry.from_key(redis_key, app=current_app)
         if entry.schedule == new_entry.schedule:
-            logger.debug(f'Leaving {redis_key} because it is already up to date')
+            logger.debug(f'Not updating {redis_key}')
             return
-        logger.debug(f'Updating {redis_key} because it has different schedule')
+        logger.debug(f'Schedule change detected, updating {redis_key}')
         entry.update(new_entry)
     else:
         logger.debug(f'Creating {redis_key} because it does not exist')
         entry = new_entry
 
-    entry.save()
     logger.debug(f'Saving {key} to redis')
+    entry.save()
 
 
 @shared_task(ignore_result=True)
@@ -61,10 +60,10 @@ def update_beat_schedule():
                                 minute=container.stop_minute)
 
         _create_and_update_entry(redbeat_prefix, start_entry_key,
-                                 'dockurr.tasks.containerman.start_container',
+                                 'dockurr.tasks.container_controller.start_container',
                                  (container.id,), start_interval)
         _create_and_update_entry(redbeat_prefix, stop_entry_key,
-                                 'dockurr.tasks.containerman.stop_container',
+                                 'dockurr.tasks.container_controller.stop_container',
                                  (container.id,), stop_interval)
 
     logger.info('Updated beat schedule')
