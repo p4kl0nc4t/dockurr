@@ -2,7 +2,8 @@ from dockurr.config import gconfig
 
 config = {
     # overriden by config.toml
-    'include': ['dockurr.tasks.containerman',
+    'include': ['dockurr.tasks.container_controller',
+                'dockurr.tasks.container_reaper',
                 'dockurr.tasks.container_scheduler'],
 
     'beat_sync_every': 1,
@@ -11,7 +12,7 @@ config = {
 
     'beat_schedule': {
         'container-reaper': {
-            'task': 'dockurr.tasks.containerman.container_reaper',
+            'task': 'dockurr.tasks.container_reaper.reap_containers',
             'schedule': gconfig['celery']['intervals']['container_reaper'],
             'options': {
                 'expires': 15,

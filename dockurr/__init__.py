@@ -27,7 +27,8 @@ def create_app():
     app = Flask(__name__)
     app.config.update({
         'SQLALCHEMY_DATABASE_URI': gconfig['database']['uri'],
-        'SECRET_KEY': gconfig['flask']['secret_key']
+        'SECRET_KEY': gconfig['flask']['secret_key'],
+        'DOCKURR_PRICES': gconfig['prices']
     })
 
     app.config.from_prefixed_env()
