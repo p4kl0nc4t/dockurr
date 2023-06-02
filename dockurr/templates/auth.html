@@ -1,22 +1,22 @@
 {% extends "skel.html" %}
-{% block title %}Auth{% endblock %}
+{% block title %}Authentication{% endblock %}
 {% block container %}
-<form class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
-    <!-- Email input -->
-    <div class="form-outline m-4 w-50">
-      <label class="form-label" for="form2Example1">Username</label>
-      <input type="text" id="form2Example1" class="form-control" name="username" />
+  <h1>Log in</h1>
+  <p>
+  Please log in to continue. If a username does not exists,
+  an account will be created with the provided password.
+  </p>
+  <form class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
+    <div class="form-outline m-4 w-lg-50">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-control" name="username" />
     </div>
-  
-    <!-- Password input -->
-    <div class="form-outline mx-4 mb-3 w-50">
-      <label class="form-label" for="form2Example2">Password</label>
-      <input type="password" id="form2Example2" class="form-control" name="password"/>
+
+    <div class="form-outline mx-4 mb-3 w-lg-50">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" name="password"/>
     </div>
-  
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mb-4 w-25">Sign in</button>
-    
-    <!-- Register buttons -->
+
+    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
   </form>
 {% endblock %}

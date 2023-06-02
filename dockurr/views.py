@@ -2,7 +2,7 @@ from flask import (Blueprint, abort, redirect, g,
                    render_template, request, session, url_for, flash)
 
 from dockurr.models import User, Container, ContainerStatus, db
-from dockurr.tasks import containerman
+from dockurr.tasks import container_controller
 
 bp = Blueprint('views', __name__)
 
@@ -70,7 +70,8 @@ def create_container():
         container = Container(g.uid, name, image, container_port)
         db.session.add(container)
         db.session.commit()
-        containerman.start_container.delay(container.id)
+        container_controller.start_container.delay(
+            container.id)  # type: ignore
         flash(f'Container {name} created successfully, will start right away',
               'success')
         return redirect(url_for('views.dashboard'))
@@ -79,19 +80,19 @@ def create_container():
 
 @bp.route('/start-container/<int:id>')
 def start_container(id):
-    containerman.start_container.delay(id)
+    container_controller.start_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
 
 
 @bp.route('/stop-container/<int:id>')
 def stop_container(id):
-    containerman.stop_container.delay(id)
+    container_controller.stop_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
 
 
 @bp.route('/delete-container/<int:id>')
 def delete_container(id):
-    containerman.delete_container.delay(id)
+    container_controller.delete_container.delay(id)  # type: ignore
     flash(f'Container {id} deleted', 'info')
     return redirect(url_for('views.dashboard'))
 
@@ -111,7 +112,6 @@ def schedule_container(id):
             container.set_schedule(start_hour, start_minute,
                                    stop_hour, stop_minute)
             flash(f'Container {container.name} scheduled', 'success')
-            # TODO: woy ronggo rapiin ye
         else:
             container.unset_schedule()
             flash(f'Container {container.name} unscheduled', 'info')
@@ -119,9 +119,7 @@ def schedule_container(id):
     return render_template('schedule_container.html', container=container)
 
 
-@bp.route('/billing/<int:id>')
-def billing(id):
+@bp.route('/container-billing/<int:id>')
+def container_billing(id):
     container = Container.query.filter_by(user_id=g.uid, id=id).first_or_404()
-    return render_template('billing.html',
-                           container=container,
-                           bills=container.calculate_bills())
+    return render_template('container_billing.html', container=container)
