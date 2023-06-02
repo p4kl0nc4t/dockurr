@@ -80,12 +80,14 @@ def create_container():
 
 @bp.route('/start-container/<int:id>')
 def start_container(id):
+    flash(f'Container {id} will be started', 'info')
     container_controller.start_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
 
 
 @bp.route('/stop-container/<int:id>')
 def stop_container(id):
+    flash(f'Container {id} will be stopped', 'info')
     container_controller.stop_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
 
@@ -93,7 +95,7 @@ def stop_container(id):
 @bp.route('/delete-container/<int:id>')
 def delete_container(id):
     container_controller.delete_container.delay(id)  # type: ignore
-    flash(f'Container {id} deleted', 'info')
+    flash(f'Container {id} will be deleted', 'info')
     return redirect(url_for('views.dashboard'))
 
 
