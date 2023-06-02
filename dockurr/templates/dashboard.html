@@ -48,7 +48,8 @@
             </a>
           </div>
         </div>
-        <div class="pt-3 pb-1">
+        <div class="d-flex col pt-3 pb-1 justify-content-between flex-lg-col">
+          <div>
           <a class="btn btn-primary mb-1 {% if not container.status.runnable %}disabled{% endif %}"
              href="{{ url_for('views.start_container', id=container.id) }}"
              type="button"
@@ -57,10 +58,13 @@
              href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
           <a class="btn btn-danger mb-1"
              href="{{ url_for('views.delete_container', id=container.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
-          <a class="btn btn-danger mb-1"
-             href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
+            </div>
+            <div>
           <a class="btn btn-primary mb-1"
+             href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
+          <a class="btn btn-warning mb-1"
              href="{{ url_for('views.container_billing', id=container.id) }}">View Billing</a>
+            </div>
         </div>
       </div>
     </div>

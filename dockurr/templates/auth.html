@@ -1,22 +1,22 @@
 {% extends "skel.html" %}
 {% block title %}Authentication{% endblock %}
 {% block container %}
+<form class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
   <h1>Log in</h1>
-  <p>
-  Please log in to continue. If a username does not exists,
-  an account will be created with the provided password.
+  <p class="col-6 ">
+    Please log in to continue. If a username does not exists,
+    an account will be created with the provided password.
   </p>
-  <form class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
-    <div class="form-outline m-4 w-lg-50">
-      <label class="form-label">Username</label>
-      <input type="text" class="form-control" name="username" />
-    </div>
+  <div class="form-outline m-4 w-lg-50">
+    <label class="form-label">Username</label>
+    <input type="text" class="form-control" name="username" />
+  </div>
 
-    <div class="form-outline mx-4 mb-3 w-lg-50">
-      <label class="form-label">Password</label>
-      <input type="password" class="form-control" name="password"/>
-    </div>
+  <div class="form-outline mx-4 mb-3 w-lg-50">
+    <label class="form-label">Password</label>
+    <input type="password" class="form-control" name="password" />
+  </div>
 
-    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-  </form>
+  <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+</form>
 {% endblock %}
