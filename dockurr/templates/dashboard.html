@@ -9,13 +9,16 @@
          height="120">
     <h1>Dockurr</h1>
   </div>
-  <div class="mt-5 d-flex flex-column flex-lg-row justify-content-between">
+  <div class="mt-5 d-flex flex-column flex-lg-row justify-content-between align-items-center">
     <h5>Welcome, <i>{{ g.username }}</i>!</h5>
     <div class="">
-      <a class="btn btn-success mx-2"
+      <a class="btn btn-success my-1"
          role="button"
          href="{{ url_for("views.create_container") }}">Create container</a>
-      <a class="btn btn-success btn-danger"
+      <a class="btn btn-secondary my-1"
+         role="button"
+         href="{{ url_for("views.user_billing") }}">User Billing</a>
+      <a class="btn btn-danger my-1"
          role="button"
          href="{{ url_for("views.logout") }}">Logout</a>
     </div>
@@ -30,9 +33,11 @@
           <div class="col-sm-3">Image:</div>
           <div class="col">{{ container.image }}</div>
         </div>
-        <div class="row font-sm">
+        <div class="row">
           <div class="col-sm-3">Internal ID:</div>
-          <code class="col d-inline-block text-truncate" style="max-width: 30vw">{{ container.internal_id }}</code>
+          <samp class="col d-inline-block text-truncate" style="max-width: 40vw">
+            {{ container.internal_id }}
+          </samp>
         </div>
         <div class="row font-sm">
           <div class="col-sm-3">Status:</div>
@@ -50,21 +55,21 @@
         </div>
         <div class="d-flex col pt-3 pb-1 justify-content-between flex-lg-col">
           <div>
-          <a class="btn btn-primary mb-1 {% if not container.status.runnable %}disabled{% endif %}"
-             href="{{ url_for('views.start_container', id=container.id) }}"
-             type="button"
-             disabled>Start</a>
-          <a class="btn btn-warning mb-1 {% if not container.status.stoppable %}disabled{% endif %}"
-             href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
-          <a class="btn btn-danger mb-1"
-             href="{{ url_for('views.delete_container', id=container.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
-            </div>
-            <div>
-          <a class="btn btn-primary mb-1"
-             href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
-          <a class="btn btn-warning mb-1"
-             href="{{ url_for('views.container_billing', id=container.id) }}">View Billing</a>
-            </div>
+            <a class="btn btn-primary mb-1 {% if not container.status.runnable %}disabled{% endif %}"
+               href="{{ url_for('views.start_container', id=container.id) }}"
+               type="button"
+               disabled>Start</a>
+            <a class="btn btn-warning mb-1 {% if not container.status.stoppable %}disabled{% endif %}"
+               href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
+            <a class="btn btn-danger mb-1"
+               href="{{ url_for('views.delete_container', id=container.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+          </div>
+          <div>
+            <a class="btn btn-primary mb-1"
+               href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
+            <a class="btn btn-warning mb-1"
+               href="{{ url_for('views.container_billing', id=container.id) }}">View Billing</a>
+          </div>
         </div>
       </div>
     </div>

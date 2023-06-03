@@ -1,0 +1,31 @@
+{% extends "skel.html" %}
+
+{% block title %}My Bills{% endblock %}
+
+{% set user_bills = user.bills %}
+
+{% block container %}
+  <div class="d-flex justify-content-center align-items-center flex-column">
+    <h1>User Billing</h1>
+    <h5>Total cost: {{ user_bills.total | format_price }}</h5>
+  </div>
+  <h3>Per-container Cost</h3>
+  <div class="table table-responsive">
+    <table class="table table-striped">
+      <thead class="table col-sm-10">
+        <tr>
+          <th scope="col">Container name</th>
+          <th scope="col">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for container_name, bills in user_bills.summary.items() %}
+          <tr>
+            <td>{{ container_name }}</td>
+            <td>{{ bills.total | format_price }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

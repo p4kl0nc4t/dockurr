@@ -125,3 +125,8 @@ def schedule_container(id):
 def container_billing(id):
     container = Container.query.filter_by(user_id=g.uid, id=id).first_or_404()
     return render_template('container_billing.html', container=container)
+
+@bp.route('/user-billing')
+def user_billing():
+    user = User.query.filter_by(id=g.uid).first_or_404()
+    return render_template('user_billing.html', user=user)
