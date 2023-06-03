@@ -29,7 +29,11 @@ def create_app():
         'SQLALCHEMY_DATABASE_URI': gconfig['database']['uri'],
         'SECRET_KEY': gconfig['flask']['secret_key'],
         'DOCKURR_PRICES': gconfig['prices']
-    })
+        })
+
+    def format_price(price: float) -> str:
+        return gconfig['prices']['format'].format(price=price)
+    app.jinja_env.filters['format_price'] = format_price
 
     app.config.from_prefixed_env()
     app.register_blueprint(views_bp)

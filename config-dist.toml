@@ -11,7 +11,7 @@ secret_key = 'kafalksfjlskdjflksanksafljsnfksanfdksan'
 uri = 'sqlite:///data.db'
 
 [prices]
-format = 'Rp{price:.02f}'
+format = 'Rp{price:,.02f}'
 container_usage_per_minute = 250
 
 [celery]
