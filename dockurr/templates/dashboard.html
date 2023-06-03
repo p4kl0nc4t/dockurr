@@ -1,5 +1,8 @@
 {% extends "skel.html" %}
 {% block title %}Dashboard{% endblock %}
+{% block meta %}
+  <meta http-equiv="refresh" content="2">  
+{% endblock %}
 {% block container %}
   <div class="mt-5 d-flex flex-column flex-lg-row justify-content-between align-items-center">
     <h5 class="fw-bold">Welcome, <i>{{ g.username }}</i>!</h5>
