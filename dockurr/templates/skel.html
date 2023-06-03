@@ -4,21 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>dockurr: {% block title %}{% endblock %}</title>
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-        crossorigin="anonymous"
-        />
+    <link href="
+    https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/sketchy/bootstrap.min.css
+    " rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container h-100">
-        <a class="navbar-brand text-center w-100" href="{{ url_for('views.dashboard') }}">Dockurr</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+    <nav class="navbar navbar-expand-lg d-flex navbar-light bg-info-emphasis justify-content-between px-4">
+      <div class="d-flex align-items-center w-full">
+        <img class="mr-3"
+        src="{{ url_for('static', filename='logo.svg') }}"
+        alt=""
+        height="30">
+        <a class="navbar-brand  mt-1 mx-2"  href="{{ url_for('views.dashboard') }}">Dockurr</a>
       </div>
+      {% if g.uid %}
+      <div>
+        <a class="btn btn-secondary my-1"
+           role="button"
+           href="{{ url_for("views.user_billing") }}">User Billing</a>
+        <a class="btn btn-danger my-1"
+           role="button"
+           href="{{ url_for("views.logout") }}">Logout</a>
+      </div>
+      {% endif %}
     </nav>
-
     <div class="container my-5">
       {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %}

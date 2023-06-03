@@ -1,27 +1,11 @@
 {% extends "skel.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block container %}
-  <div class="d-flex justify-content-center flex-column align-items-center">
-    <img class="d-block my-2"
-         src="{{ url_for('static', filename='logo.svg') }}"
-         alt=""
-         width="150"
-         height="120">
-    <h1>Dockurr</h1>
-  </div>
   <div class="mt-5 d-flex flex-column flex-lg-row justify-content-between align-items-center">
-    <h5>Welcome, <i>{{ g.username }}</i>!</h5>
-    <div class="">
-      <a class="btn btn-success my-1"
-         role="button"
-         href="{{ url_for("views.create_container") }}">Create container</a>
-      <a class="btn btn-secondary my-1"
-         role="button"
-         href="{{ url_for("views.user_billing") }}">User Billing</a>
-      <a class="btn btn-danger my-1"
-         role="button"
-         href="{{ url_for("views.logout") }}">Logout</a>
-    </div>
+    <h5 class="fw-bold">Welcome, <i>{{ g.username }}</i>!</h5>
+    <a class="btn btn-success my-1"
+    role="button"
+    href="{{ url_for("views.create_container") }}">Create container</a>
   </div>
   {% for container in containers %}
     <div class="card my-4">
@@ -59,7 +43,7 @@
                href="{{ url_for('views.start_container', id=container.id) }}"
                type="button"
                disabled>Start</a>
-            <a class="btn btn-warning mb-1 {% if not container.status.stoppable %}disabled{% endif %}"
+            <a class="btn btn-warning text-dark mb-1 {% if not container.status.stoppable %}disabled{% endif %}"
                href="{{ url_for('views.stop_container', id=container.id) }}">Stop</a>
             <a class="btn btn-danger mb-1"
                href="{{ url_for('views.delete_container', id=container.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
@@ -67,7 +51,7 @@
           <div>
             <a class="btn btn-primary mb-1"
                href="{{ url_for('views.schedule_container', id=container.id) }}">Schedule</a>
-            <a class="btn btn-warning mb-1"
+            <a class="btn btn-warning text-dark mb-1"
                href="{{ url_for('views.container_billing', id=container.id) }}">View Billing</a>
           </div>
         </div>
