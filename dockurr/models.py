@@ -1,7 +1,7 @@
 import datetime
 import enum
 import random
-from typing import Union
+from typing import Any, Union
 
 from passlib.hash import pbkdf2_sha256
 from flask_sqlalchemy import SQLAlchemy
@@ -24,6 +24,13 @@ class User(db.Model):
     def __init__(self, username: str, plain_password: str):
         self.username = username
         self.password = pbkdf2_sha256.hash(plain_password)
+
+    @property
+    def bills(self):
+        summary = {c.name: c.bills
+                   for c in self.containers}
+        total = sum([b['total'] for b in summary.values()])
+        return {'total': total, 'summary': summary}
 
     @classmethod
     def authenticate(cls, username, password) -> Union[int, None]:
@@ -109,8 +116,9 @@ class Container(db.Model):
     @property
     def bills(self):
         action_logs = self.action_logs
-        bills = []
+        history = []
         lone_start = None
+        total_cost = 0
 
         for log in action_logs:
             if lone_start is None and log.action == ContainerAction.START:
@@ -119,14 +127,17 @@ class Container(db.Model):
                 seconds = (log.timestamp -
                            lone_start.timestamp).total_seconds()
                 minutes = seconds / 60
-                bills.append({
+                cost = minutes * \
+                    gconfig['prices']['container_usage_per_minute']
+                history.append({
                     'start': lone_start.timestamp,
                     'stop': log.timestamp,
                     'minutes': minutes,
-                    'cost': minutes * gconfig['prices']['container_usage_per_minute'],
+                    'cost': cost
                 })
+                total_cost += cost
                 lone_start = None
-        return bills
+        return {'total': total_cost, 'history': history}
 
     def set_schedule(self, start_hour, start_minute, stop_hour, stop_minute):
         self.scheduled = True
