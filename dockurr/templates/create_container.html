@@ -3,28 +3,31 @@
 {% block title %}Create Container{% endblock %}
 
 {% block container %}
-  <h1 class="py-2 text-truncate text-center">Create Container</h1>
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-        <div class="px-2 text-start">
-          <form action="" class="justify-content-center" method="post">
-            <div class="form-group py-2">
-              <label class="sr-only">Container Name</label>
-              <input type="text" class="form-control" placeholder="Jane Doe" name="name" value="My nginx server" required>
-            </div>
-            <div class="form-group py-2">
-              <label class="sr-only">From Image</label>
-              <input type="text" class="form-control" placeholder="nginx" name="image" value="nginx" required>
-            </div>
-            <div class="form-group py-2">
-              <label class="sr-only">Container Port</label>
-              <input type="text" class="form-control" placeholder="80" name="container_port" value="80" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-          </form>
-        </div>
+<h1 class="py-2 text-truncate text-center">Create Container</h1>
+<div class="container">
+  <div class="row">
+    <div class=" col-xl-5 mx-auto text-center form p-4">
+      <div class="px-2 text-start">
+        <form action="" class="justify-content-center" method="post">
+          <div class="form-group py-2">
+            <label class="sr-only">Container Name</label>
+            <input type="text" class="form-control" placeholder="Jane Doe" name="name" value="My nginx server" required>
+          </div>
+          <div class="form-group py-2">
+            <label class="sr-only">From Image</label>
+            <input type="text" class="form-control" placeholder="nginx" name="image" value="nginx" required>
+          </div>
+          <div class="form-group py-2">
+            <label class="sr-only">Container Port</label>
+            <input type="text" class="form-control" placeholder="80" name="container_port" value="80" required>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+            <button type="submit" class="m-3 btn btn-primary">Create</button>
+          </div>
+        </form>
       </div>
     </div>
+
   </div>
+</div>
 {% endblock %}
