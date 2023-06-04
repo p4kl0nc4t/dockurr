@@ -1,7 +1,7 @@
 import datetime
 import enum
 import random
-from typing import Any, Union
+from typing import Union
 
 from passlib.hash import pbkdf2_sha256
 from flask_sqlalchemy import SQLAlchemy
@@ -43,7 +43,7 @@ class ContainerStatus(str, enum.Enum):
     # container status
     UNKNOWN = 'unknown'
     NOT_FOUND = 'not-found'
-    INTERNAL_ERROR = 'internal-error'
+    DIRTY = 'dirty'
 
     # docker container status
     CREATED = 'created'
@@ -81,6 +81,7 @@ class Container(db.Model):
     container_port = db.Column(db.Integer, nullable=False)
     public_port = db.Column(db.Integer, nullable=False)
 
+    dirty = db.Column(db.Boolean, nullable=False, default=False)
     scheduled = db.Column(db.Boolean, nullable=False, default=False)
     start_hour = db.Column(db.Integer, nullable=True)
     start_minute = db.Column(db.Integer, nullable=True)
@@ -94,7 +95,9 @@ class Container(db.Model):
 
     @property
     def status(self) -> ContainerStatus:
-        if not self.internal_id:
+        if self.dirty:
+            return ContainerStatus.DIRTY
+        elif not self.internal_id:
             return ContainerStatus.NOT_FOUND
 
         status = get_docker_container_status(self.internal_id)

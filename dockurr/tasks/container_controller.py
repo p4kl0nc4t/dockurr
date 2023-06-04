@@ -25,7 +25,7 @@ def start_container(id_):
         except Exception as e:
             logger.error('Failed to start container %s', id_, exc_info=True)
             # bye-bye, container will be reaped
-            container.status = ContainerStatus.INTERNAL_ERROR
+            container.dirty = True
             db.session.commit()
             raise e
         container.internal_id = docker_container.id  # type: ignore
