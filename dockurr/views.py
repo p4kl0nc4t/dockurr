@@ -9,8 +9,12 @@ bp = Blueprint('views', __name__)
 
 @bp.before_request
 def check_auth():
-    if request.endpoint != 'views.auth' and not session.get('uid'):
+    on_auth_page = request.endpoint == 'views.auth'
+    logged_in = session.get('uid') is not None
+    if not on_auth_page and not logged_in:
         return redirect(url_for('views.auth'))
+    elif on_auth_page and logged_in:
+        return redirect(url_for('views.dashboard'))
     g.uid = session.get('uid')
     g.username = session.get('username')
     g.CS = ContainerStatus
@@ -80,6 +84,7 @@ def create_container():
 
 @bp.route('/start-container/<int:id>')
 def start_container(id):
+    Container.query.filter_by(id=id, user_id=g.uid).first_or_404()
     flash(f'Container {id} will be started', 'info')
     container_controller.start_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
@@ -87,6 +92,7 @@ def start_container(id):
 
 @bp.route('/stop-container/<int:id>')
 def stop_container(id):
+    Container.query.filter_by(id=id, user_id=g.uid).first_or_404()
     flash(f'Container {id} will be stopped', 'info')
     container_controller.stop_container.delay(id)  # type: ignore
     return redirect(url_for('views.dashboard'))
@@ -94,6 +100,7 @@ def stop_container(id):
 
 @bp.route('/delete-container/<int:id>')
 def delete_container(id):
+    Container.query.filter_by(id=id, user_id=g.uid).first_or_404()
     container_controller.delete_container.delay(id)  # type: ignore
     flash(f'Container {id} will be deleted', 'info')
     return redirect(url_for('views.dashboard'))
@@ -101,7 +108,8 @@ def delete_container(id):
 
 @bp.route('/schedule-container/<int:id>', methods=['GET', 'POST'])
 def schedule_container(id):
-    container = Container.query.filter_by(id=id).first_or_404()
+    container = Container.query.filter_by(id=id,
+                                          user_id=g.uid).first_or_404()
     if request.method == 'POST':
         scheduled = request.form.get('scheduled')
         start_hour = request.form.get('start_hour')
@@ -125,6 +133,7 @@ def schedule_container(id):
 def container_billing(id):
     container = Container.query.filter_by(user_id=g.uid, id=id).first_or_404()
     return render_template('container_billing.html', container=container)
+
 
 @bp.route('/user-billing')
 def user_billing():
