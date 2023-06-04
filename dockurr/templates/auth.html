@@ -1,22 +1,38 @@
-{% extends "skel.html" %}
-{% block title %}Authentication{% endblock %}
+{% block title %}{% endblock %}
 {% block container %}
-<form class="d-flex justify-content-center flex-column align-items-center h-100" method="post">
-  <h1>Log in</h1>
-  <p class="col-6 ">
-    Please log in to continue. If a username does not exists,
-    an account will be created with the provided password.
-  </p>
-  <div class="form-outline m-4 w-lg-50">
-    <label class="form-label">Username</label>
-    <input type="text" class="form-control" name="username" />
-  </div>
+<!DOCTYPE html>
+<html lang="en">
 
-  <div class="form-outline mx-4 mb-3 w-lg-50">
-    <label class="form-label">Password</label>
-    <input type="password" class="form-control" name="password" />
-  </div>
+<head>
+  <link href="
+      https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/sketchy/bootstrap.min.css
+      " rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-  <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-</form>
+<body>
+  <form class="d-flex justify-content-center flex-column align-items-center position-absolute top-50 start-50 translate-middle" method="post">
+    <div class="text-center">
+      <img class="" src="{{ url_for('static', filename='logo.svg') }}" alt="" height="120">
+      <h1>Dockurr</h1>
+      <p>
+        Please log in to continue.<br> If a username does not exists,
+        an account will be created with the provided password.
+      </p>
+    </div>
+    <div class="form-outline m-4 w-lg-50">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-control" name="username" />
+    </div>
+
+    <div class="form-outline mx-4 mb-3 w-lg-50">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" name="password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+  </form>
+</body>
+
+</html>
 {% endblock %}
