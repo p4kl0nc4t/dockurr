@@ -6,29 +6,29 @@
     {% block meta %}{% endblock %}
     <title>dockurr: {% block title %}{% endblock %}</title>
     <link href="
-    https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/sketchy/bootstrap.min.css
-    " rel="stylesheet">
+                https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/sketchy/bootstrap.min.css
+                " rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg d-flex navbar-light bg-info-emphasis justify-content-between px-4">
       <div class="d-flex align-items-center w-full">
         <img class="mr-3"
-        src="{{ url_for('static', filename='logo.svg') }}"
-        alt=""
-        height="30">
+             src="{{ url_for('static', filename='logo.svg') }}"
+             alt=""
+             height="30">
         <a class="navbar-brand  mt-1 mx-2"  href="{{ url_for('views.dashboard') }}">Dockurr</a>
       </div>
       {% if g.uid %}
-      <div>
-        <a class="btn btn-secondary my-1"
-           role="button"
-           href="{{ url_for("views.user_billing") }}">User Billing</a>
-        <a class="btn btn-danger my-1"
-           role="button"
-           href="{{ url_for("views.logout") }}">Logout</a>
-      </div>
+        <div>
+          <a class="btn btn-secondary my-1"
+             role="button"
+             href="{{ url_for("views.user_billing") }}">User Billing</a>
+          <a class="btn btn-danger my-1"
+             role="button"
+             href="{{ url_for("views.logout") }}">Logout</a>
+        </div>
       {% endif %}
     </nav>
     <div class="container my-5">
