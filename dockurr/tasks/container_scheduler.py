@@ -4,6 +4,7 @@ from celery.utils.log import get_task_logger
 from redbeat import RedBeatSchedulerEntry
 from redbeat.schedulers import get_redis
 
+from dockurr.config import gconfig
 from dockurr.models import Container
 
 logger = get_task_logger(__name__)
@@ -54,9 +55,15 @@ def update_beat_schedule():
         start_entry_key = f'{container_key}:start'  # container:1:start
         stop_entry_key = f'{container_key}:stop'
 
-        start_interval = crontab(hour=container.start_hour,
+        # we need this workaround because redbeat doesn't support timezones
+        tz_offset = gconfig['workarounds']['redbeat_timezone_offset']
+        def apply_offset(hour): return (24 + hour - tz_offset) % 24
+        start_hour = apply_offset(container.start_hour)
+        stop_hour = apply_offset(container.stop_hour)
+
+        start_interval = crontab(hour=start_hour,
                                  minute=container.start_minute)
-        stop_interval = crontab(hour=container.stop_hour,
+        stop_interval = crontab(hour=stop_hour,
                                 minute=container.stop_minute)
 
         _create_and_update_entry(redbeat_prefix, start_entry_key,

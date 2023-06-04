@@ -14,8 +14,10 @@ uri = 'sqlite:///data.db'
 format = 'Rp{price:,.02f}'
 container_usage_per_minute = 250
 
+[workarounds]
+redbeat_timezone_offset = 7  # redbeat only runs on UTC? 7 means GMT+7
+
 [celery]
-# timezone = 'Asia/Jakarta'
 broker_url = 'amqp://localhost:5672'
 redbeat_redis_url = 'redis://localhost:6379/1'
 [celery.intervals]
